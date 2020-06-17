@@ -1,0 +1,1 @@
+{"version":3,"file":"nav.js","sourceRoot":"","sources":["../../src/require/nav.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,SAAS,eAAe;IACtB,QAAQ,CAAC,aAAa,CAAC,SAAS,CAAC,CAAC,SAAS,CAAC,GAAG,CAAC,UAAU,CAAC,CAAC;IAC5D,QAAQ,CAAC,aAAa,CAAC,aAAa,CAAC,CAAC,SAAS,CAAC,GAAG,CAAC,UAAU,CAAC,CAAC;AAClE,CAAC;AAED,MAAM;AACN,eAAe,EAAE,CAAC"}

@@ -1,0 +1,8 @@
+.navbar {
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+.navbar-item {
+    width: 120px;
+}

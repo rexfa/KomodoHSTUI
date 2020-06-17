@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/nav.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap/4.5.0/bootstrap.css">
+
+    <link rel="stylesheet" href="../assets/css/workspace.css">
+
+    <link rel="import" href="sections/workspace/workpanel.html">
+    <link rel="import" href="sections/workspace/storagepanel.html">
+    <link rel="import" href="sections/settings/settingspanel.html">
+    <link rel="import" href="sections/settings/statuspanel.html">
+
+    <script src="../assets/lib-js/jquery/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"></script>
+    <script>
+        if (typeof module === 'object') {
+            window.jQuery = window.$ = module.exports;
+        };
+    </script>
+    <script src="../assets/lib-js/jsdelivr/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"></script>
+    <script src="../assets/lib-js/bootstrap/4.5.0/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"></script>
+    <title>KOMODO BI AUTO</title>
+</head>
+
+<body>
+    <nav class="nav-rex js-nav">
+        <header>
+            <h1 class="nav-rex-title">KOMODO <strong>HST AUTO</strong></h1>
+        </header>
+        <div class="nav-rex-item u-category-workspace">
+            <h5 class="nav-rex-category">
+                <svg class="nav-rex-icon"><use xlink:href="../assets/img/icons.svg#icon-windows"></use></svg> 工作空间
+            </h5>
+            <button type="button" id="button-workpanel" data-section="workpanel" class="nav-rex-button"><em>工作</em>面板</button>
+            <button type="button" id="button-storagepanel" data-section="storagepanel" class="nav-rex-button"><em>存储</em>面板</button>
+        </div>
+
+        <div class="nav-rex-item u-category-settings">
+            <h5 class="nav-rex-category">
+                <svg class="nav-rex-icon"><use xlink:href="../assets/img/icons.svg#icon-settings"></use></svg> 系统设置
+            </h5>
+            <button type="button" id="button-settingspanel" data-section="settingspanel" class="nav-rex-button"><em>设置</em>面板</button>
+            <button type="button" id="button-statuspanel" data-section="statuspanel" class="nav-rex-button"><em>状态</em>面板</button>
+        </div>
+    </nav>
+    <main class="content-rex js-content">
+        <section id="works-section" class="section js-section u-category-works">
+            <header class="section-header">
+                <div class="section-wrapper">
+                    <h1>
+                        <svg class="section-icon">
+                    <use xlink:href="assets/img/icons.svg#icon-windows"></use>
+                  </svg> 工作状态
+                    </h1>
+                    <h3>方法列表下为 <code>工作列表</code></h3>
+                </div>
+            </header>
+            <div class="section-mainspace">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
+                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
+                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                require('../dist/renderer-process/workspace/workpanel')
+            </script>
+
+
+        </section>
+    </main>
+    <script>
+        require('../dist/require/nav')
+    </script>
+</body>
+
+</html>

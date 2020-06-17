@@ -1,0 +1,75 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "type": "electron",
+            "request": "launch",
+            "name": "Launch Electron against the workspace",
+            "appDir": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug Render Procress on chrome",
+            "type": "chrome",
+            "request": "launch",
+            "preLaunchTask": "tsc:build-tsconfig.json",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "windows": {
+              "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            },
+            "runtimeArgs": [
+              "${workspaceFolder}/dist/main.js",
+              "--remote-debugging-port=10999"
+            ],
+            "port": 10999,
+            "webRoot": "${workspaceFolder}",
+            "timeout": 3000000
+          },
+          {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Main Process",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+            "program": "${workspaceRoot}/index.js",
+            "runtimeArgs": [
+              ".",
+              // this args for attaching render process
+              "--remote-debugging-port=10999"
+            ],
+            "windows": {
+              "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+            },
+            "protocol": "legacy"
+          },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Electron TS", // 配置方案名字, 左下角可以选
+            "program": "${workspaceFolder}/dist/main.js", // 这里要写编译后的js文件, 即electron入口
+            "preLaunchTask": "tsc:build-tsconfig.json",
+            "sourceMaps": true, // 必须为true
+            "outFiles": ["${workspaceFolder}/**/*.js"],
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+              },
+            "protocol": "inspector" // 默认的协议是legacy，该协议导致不进入断点
+        },
+        {
+          "type": "chrome",
+          "request": "attach",
+          "name": "Attach to Render process TS",
+          "port": 9222,
+          "webRoot": "${workspaceRoot}/html",
+          "sourceMaps": true,
+          "sourceMapPathOverrides": {
+            "webpack:///render/*": "${workspaceRoot}/render/*",
+            "webpack:///./render/*": "${workspaceRoot}/render/*"
+          }
+        }
+    ]
+}
