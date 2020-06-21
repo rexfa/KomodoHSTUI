@@ -75,14 +75,25 @@ function displayFiles(err, files) {
 }
 function displayFile(file) {
     console.log(file.fileName + ' ' + file.type + ' ' + file.size);
-    //let mainArea = document.getElementById('main-area');
-    //let template = document.querySelector('#item-template');
+    let mainArea = document.getElementById('nav-store-items');
+    let template = document.querySelector('#store-item-template');
     // 创建模板实列的副本
-    //let clone = document.importNode(template.content, true);
+    let clone = document.importNode(template, true);
     // 加入文件名及对应的图标
-    //clone.querySelector('img').src = `images/${file.type}.svg`;
-    //clone.querySelector('.filename').innerText = file.name;
-    //mainArea.appendChild(clone);
+    clone.querySelector('img').src = `../assets/img/${file.type}.svg`;
+    clone.querySelector('.filename').innerHTML = file.fileName;
+    clone.id = 'storeid-' + file.type + '-' + file.fileName;
+    if (file.type == 'directory') {
+        clone.addEventListener('click', function () {
+            alert("d " + file.fileName);
+        });
+    }
+    else {
+        clone.addEventListener('click', function () {
+            alert("f " + file.fileName);
+        });
+    }
+    mainArea.appendChild(clone);
 }
 getFilesInFolder(getUsersHomeFolder());
 //# sourceMappingURL=workpanel.js.map

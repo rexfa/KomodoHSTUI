@@ -1,0 +1,14 @@
+.works-section-storepanel {
+    display: flex;
+    overflow: scroll;
+    overflow-y: auto;
+    width: auto;
+    height: 100%;
+}
+
+.works-section-filedirpanel {
+    border: 1px solid red;
+    width: 100px;
+    height: 80px;
+    margin: 15px;
+}
