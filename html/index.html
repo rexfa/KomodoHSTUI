@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../assets/css/nav.css">
     <link rel="stylesheet" href="../assets/css/section.css">
     <link rel="stylesheet" href="../assets/css/bootstrap/4.5.0/bootstrap.css">
-    <link rel="stylesheet" href="../assets/css/works-section.css">
+    <link rel="stylesheet" href="../assets/css/hstautoworkpanel.css">
 
     <link rel="stylesheet" href="../assets/css/workspace.css">
 
@@ -37,7 +37,7 @@
             <h5 class="nav-rex-category">
                 <svg class="nav-rex-icon"><use xlink:href="../assets/img/icons.svg#icon-windows"></use></svg> 工作空间
             </h5>
-            <button type="button" id="button-workpanel" data-section="workpanel" class="nav-rex-button"><em>工作</em>面板</button>
+            <button type="button" id="button-workpanel" data-section="hstautoworkpanel" class="nav-rex-button"><em>工作</em>面板</button>
             <button type="button" id="button-storagepanel" data-section="storagepanel" class="nav-rex-button"><em>存储</em>面板</button>
         </div>
 
@@ -50,7 +50,7 @@
         </div>
     </nav>
     <main class="content-rex js-content">
-        <section id="works-section" class="section js-section u-category-works">
+        <section id="hstautoworkpanel-section" class="section js-section u-category-hstautoworkpanel">
             <header class="section-header">
                 <div class="section-wrapper">
                     <h1>
@@ -72,8 +72,11 @@
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-task" role="tabpanel" aria-labelledby="nav-task-tab">任务</div>
                     <div class="tab-pane fade" id="nav-store" role="tabpanel" aria-labelledby="nav-store-tab">
-                        <div id="nav-store-items" class="works-section-storepanel">
-                            <div id="store-item-template" class="works-section-filedirpanel">
+                        <div class="hstautoworkpanel-section-ctrlpanel">
+                            <button id='hstautoworkpanel-storepanel-refresh'>刷新</button>
+                        </div>
+                        <div id="nav-store-items" class="hstautoworkpanel-section-storepanel">
+                            <div id="store-item-template" class="hstautoworkpanel-section-filedirpanel">
                                 <div class="item">
                                     <img class='icon' src="../assets/img/directory.svg" />
                                     <div class="filename">..</div>
@@ -88,6 +91,9 @@
                 require('../dist/renderer-process/workspace/workpanel')
             </script>
         </section>
+        <section id="storagepanel-section" class="section js-section u-category-storagepanel"></section>
+        <section id="settingspanel-section" class="section js-section u-category-hstautoworkpanel"></section>
+        <section id="statuspanel-section" class="section js-section u-category-statuspanel"></section>
     </main>
     <script>
         require('../dist/require/nav')

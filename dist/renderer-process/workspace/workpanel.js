@@ -81,7 +81,10 @@ function displayFile(file) {
     let clone = document.importNode(template, true);
     // 加入文件名及对应的图标
     clone.querySelector('img').src = `../assets/img/${file.type}.svg`;
-    clone.querySelector('.filename').innerHTML = file.fileName;
+    clone.querySelector('.filename').innerHTML = function () { if (file.fileName.length > 15)
+        return file.fileName.substr(0, 12) + '...';
+    else
+        return file.fileName; }();
     clone.id = 'storeid-' + file.type + '-' + file.fileName;
     if (file.type == 'directory') {
         clone.addEventListener('click', function () {
@@ -95,5 +98,8 @@ function displayFile(file) {
     }
     mainArea.appendChild(clone);
 }
+document.getElementById('hstautoworkpanel-storepanel-refresh').addEventListener('click', function (event) {
+    getFilesInFolder(getUsersHomeFolder());
+});
 getFilesInFolder(getUsersHomeFolder());
 //# sourceMappingURL=workpanel.js.map
