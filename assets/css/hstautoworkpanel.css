@@ -11,10 +11,28 @@
     height: 100%;
 }
 
-.hstautoworkpanel-section-filedirpanel {
+.hstautoworkpanel-section-filedir {
     display: inline-block;
     border: 1px solid var(--color-accent);
     width: 120px;
     height: 80px;
     margin: 15px;
+}
+
+.hstautoworkpanel-section-filedir.is-templete {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.hstautoworkpanel-section-disk {
+    display: inline-block;
+    border: 1px solid var(--color-accent);
+    width: 100px;
+    height: 20px;
+    margin: 1px;
+}
+
+.hstautoworkpanel-section-disk.is-templete {
+    visibility: hidden;
+    opacity: 0;
 }

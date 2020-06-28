@@ -72,15 +72,26 @@
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-task" role="tabpanel" aria-labelledby="nav-task-tab">任务</div>
                     <div class="tab-pane fade" id="nav-store" role="tabpanel" aria-labelledby="nav-store-tab">
+                        <div>
+                            <button id='hstautoworkpanel-storepanel-addTask'>添加入任务列表</button>已经选中
+                            <label id='hstautoworkpanel-storepanel-selectcount'></label>
+                        </div>
                         <div class="hstautoworkpanel-section-ctrlpanel">
                             <button id='hstautoworkpanel-storepanel-refresh'>刷新</button>
+                            <label id='hstautoworkpanel-storepanel-currentdisk'></label>
+                            <div id='hstautoworkpanel-store-disks'></div>
                         </div>
-                        <div id="nav-store-items" class="hstautoworkpanel-section-storepanel">
-                            <div id="store-item-template" class="hstautoworkpanel-section-filedirpanel">
-                                <div class="item">
-                                    <img class='icon' src="../assets/img/directory.svg" />
-                                    <div class="filename">..</div>
-                                </div>
+                        <div id="hstautoworkpanel-store-items" class="hstautoworkpanel-section-storepanel">
+                        </div>
+                        <div id="store-item-template" class="hstautoworkpanel-section-filedir is-templete">
+                            <div class="item">
+                                <img class='icon' src="../assets/img/directory.svg" />
+                                <div class="filename">..</div>
+                            </div>
+                        </div>
+                        <div id="store-disk-template" class="hstautoworkpanel-section-disk is-templete">
+                            <div class="item">
+                                <div class="diskname">..</div>
                             </div>
                         </div>
                     </div>
