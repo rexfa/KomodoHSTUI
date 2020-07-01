@@ -9,6 +9,8 @@
     --color-bg: hsl(0, 0%, 96%);
     --color-accent: black;
     /* Fallback */
+    --color-usbdisk: hsl(113, 65%, 78%);
+    --color-harddisk: hsl(50, 44%, 48%);
 }
 
 

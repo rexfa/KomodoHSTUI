@@ -32,6 +32,7 @@ class FileClass {
         this.size = size;
     }
 }
+let selectedFiles;
 /*
 function connectionDB() {
   const connection = mysql.createConnection({
@@ -57,14 +58,28 @@ function getFilesInFolder(folderPath) {
     removeAllFileAndDir();
     const lbCurrentdisk = document.getElementById('hstautoworkpanel-storepanel-currentdisk');
     lbCurrentdisk.innerHTML = folderPath;
-    fs.readdir(folderPath, (err, files) => {
-        if (err) {
-            console.log('Folder is not load.' + err.message);
+    // fs.readdir(folderPath, (err, files)=> {
+    //   if (err) {
+    //     console.log('Folder is not load.'+err.message);
+    //     return;
+    //   }
+    //   //console.log('Folders files length is '+files.length);
+    //   inspectAndDescribeFiles(folderPath, files);
+    // });
+    try {
+        const subDirsAndFiles = fs.readdirSync(folderPath); // 换成同步方法
+        inspectAndDescribeFiles(folderPath, subDirsAndFiles);
+    }
+    catch (err) {
+        console.log('fs err is ' + err);
+        getDriversInfo();
+        if (folderPath != getUsersHomeFolder()) {
+            getFilesInFolder(getUsersHomeFolder());
+        }
+        else {
             return;
         }
-        //console.log('Folders files length is '+files.length);
-        inspectAndDescribeFiles(folderPath, files);
-    });
+    }
 }
 /**
  * 异步读取文件和目录
@@ -86,7 +101,7 @@ function inspectAndDescribeFile(filePath) {
     const result = new FileClass(path.basename(filePath), filePath, '', 0);
     fs.stat(filePath, (err, stat) => {
         if (err) {
-            console.log(err);
+            console.log('Stat info: ' + err);
         }
         else {
             //console.log('stat get isFile '+stat.isFile());
@@ -119,7 +134,7 @@ function displayFiles(err, files) {
  * @param {FileClass} file 类
  */
 function displayFile(file) {
-    //console.log(file.fileName +' ' + file.type+' '+file.size);
+    console.log(file.fileName + ' ' + file.type + ' ' + file.size);
     const mainArea = document.getElementById('hstautoworkpanel-store-items');
     const template = document.getElementById('store-item-template');
     // 创建模板实列的副本
@@ -133,15 +148,26 @@ function displayFile(file) {
         else
             return file.fileName;
     }();
+    const cloneDivCheckbox = clone.querySelector('.hstautoworkpanel-section-floatcheckbox');
+    const cloneCheckbox = clone.querySelector('.hstautoworkpanel-floatcheckbox');
+    const cloneImg = clone.querySelector('.icon');
     clone.id = 'storeid-' + file.type + '-' + file.fileName;
     if (file.type == 'directory') {
-        clone.addEventListener('click', function () {
-            alert('d ' + file.fileName);
+        cloneDivCheckbox.classList.remove('is-shown');
+        cloneImg.addEventListener('click', function () {
+            // alert('d '+file.path);
+            getFilesInFolder(file.path);
         });
     }
     else {
-        clone.addEventListener('click', function () {
-            alert('f ' + file.fileName);
+        cloneDivCheckbox.id = 'checkbox-' + file.path;
+        cloneCheckbox.value = file.path;
+        cloneImg.addEventListener('click', function () {
+            // alert('f '+file.fileName);
+            clickCheckbox(cloneCheckbox);
+        });
+        cloneCheckbox.addEventListener('onChanged', function () {
+            constructSelectFileList();
         });
     }
     mainArea.appendChild(clone);
@@ -151,21 +177,22 @@ function displayFile(file) {
  */
 function removeAllFileAndDir() {
     const mainArea = document.getElementById('hstautoworkpanel-store-items');
-    // let template = document.getElementById('store-item-template');
+    while (mainArea.lastChild) {
+        mainArea.removeChild(mainArea.lastChild);
+    }
     // 这种方式略显粗暴
-    mainArea.innerHTML = '';
-    // mainArea.appendChild(template);
-    // console.log(mainArea.childNodes.length);
-    // while(mainArea.childNodes.length>1){
-    //  mainArea.removeChild(mainArea.lastElementChild);
-    // }
+    //mainArea.innerHTML='';
 }
 /**
  * 移除所有显示的盘符
  */
 function removeAllDisks() {
     const disksdiv = document.getElementById('hstautoworkpanel-store-disks');
-    disksdiv.innerHTML = '';
+    //disksdiv.removeAllChild();  // 不用这个为了兼容性
+    while (disksdiv.lastChild) {
+        disksdiv.removeChild(disksdiv.lastChild);
+    }
+    //disksdiv.innerHTML=''; // 过于暴力
 }
 /**
  * 获取所有驱动器
@@ -182,7 +209,16 @@ async function getDriversInfo() {
             const clone = document.importNode(template, true);
             clone.classList.remove('is-templete');
             clone.id = 'diskid-' + mountpoint.path;
+            if (driver.isUSB) {
+                clone.classList.add('is-usb');
+            }
+            else {
+                clone.classList.add('is-flexed');
+            }
             clone.querySelector('.diskname').innerHTML = mountpoint.path;
+            clone.addEventListener('click', function () {
+                getFilesInFolder(mountpoint.path);
+            });
             disksdiv.appendChild(clone);
         });
     });
@@ -214,9 +250,44 @@ async function getDriversInfo() {
       }
     });*/
 }
+/**
+ *
+ * @param {string} filePath 路径
+ */
+function addTaskFileList(filePath) {
+    selectedFiles.forEach(function (file) {
+        if (file.path == filePath) {
+            return;
+        }
+    });
+    const newfile = new FileClass(path.basename(filePath), filePath, '', 0);
+    selectedFiles.push(newfile);
+}
+/**
+ * 重新构建选定文件列表
+ */
+function constructSelectFileList() {
+    selectedFiles = new Array();
+    const checkboxs = document.querySelectorAll('.hstautoworkpanel-floatcheckbox');
+    checkboxs.forEach(function (cb) {
+        if (cb.checked) {
+            const newfile = new FileClass(path.basename(cb.value), cb.value, '', 0);
+            selectedFiles.push(newfile);
+        }
+    });
+    document.getElementById('hstautoworkpanel-storepanel-selectcount').innerHTML = '' + selectedFiles.length;
+}
+/**
+ * 改变checkbox
+ * @param {any} cloneCheckbox checkbox
+ */
+function clickCheckbox(cloneCheckbox) {
+    cloneCheckbox.checked = (!cloneCheckbox.checked);
+    constructSelectFileList();
+}
 document.getElementById('hstautoworkpanel-storepanel-refresh').addEventListener('click', function (event) {
     getFilesInFolder(getUsersHomeFolder());
-    // getDriversInfo();
+    getDriversInfo();
 });
 getFilesInFolder(getUsersHomeFolder());
 getDriversInfo();

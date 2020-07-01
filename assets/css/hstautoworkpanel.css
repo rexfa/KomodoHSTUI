@@ -36,3 +36,22 @@
     visibility: hidden;
     opacity: 0;
 }
+
+.hstautoworkpanel-section-disk.is-usb {
+    background-color: var(--color-usbdisk);
+}
+
+.hstautoworkpanel-section-disk.is-flexed {
+    background-color: var(--color-harddisk);
+}
+
+.hstautoworkpanel-section-floatcheckbox {
+    Float: left;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.hstautoworkpanel-section-floatcheckbox.is-shown {
+    visibility: visible;
+    opacity: 1;
+}

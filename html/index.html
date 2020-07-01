@@ -73,8 +73,8 @@
                     <div class="tab-pane fade show active" id="nav-task" role="tabpanel" aria-labelledby="nav-task-tab">任务</div>
                     <div class="tab-pane fade" id="nav-store" role="tabpanel" aria-labelledby="nav-store-tab">
                         <div>
-                            <button id='hstautoworkpanel-storepanel-addTask'>添加入任务列表</button>已经选中
-                            <label id='hstautoworkpanel-storepanel-selectcount'></label>
+                            <button id='hstautoworkpanel-storepanel-addTask'>添加入任务列表</button>已经选中的
+                            <div id='hstautoworkpanel-storepanel-selectcount'></div>
                         </div>
                         <div class="hstautoworkpanel-section-ctrlpanel">
                             <button id='hstautoworkpanel-storepanel-refresh'>刷新</button>
@@ -84,6 +84,9 @@
                         <div id="hstautoworkpanel-store-items" class="hstautoworkpanel-section-storepanel">
                         </div>
                         <div id="store-item-template" class="hstautoworkpanel-section-filedir is-templete">
+                            <div class="hstautoworkpanel-section-floatcheckbox is-shown">
+                                <input class="hstautoworkpanel-floatcheckbox" type="checkbox" />
+                            </div>
                             <div class="item">
                                 <img class='icon' src="../assets/img/directory.svg" />
                                 <div class="filename">..</div>
