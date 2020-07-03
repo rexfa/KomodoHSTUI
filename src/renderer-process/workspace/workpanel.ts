@@ -7,7 +7,7 @@
 import {Stats} from 'fs';
 
 // });
-// import mysql = require('mysql');
+import mysql = require('mysql');
 import fs = require('fs');
 
 import osenv = require('osenv');
@@ -39,15 +39,19 @@ class FileClass {
   }
 }
 let selectedFiles:FileClass[];
-/*
-function connectionDB() {
-  const connection = mysql.createConnection({
+/**
+ * 连接数据库
+ * @return {mysql.Connectio} 返回数据库连接
+ */
+function connectionDB():mysql.Connection {
+  const dbConnection:mysql.Connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '123qwe', // or the original password : 'apaswword'
     database: 'komodohstauto',
   });
-}*/
+  return dbConnection;
+}
 /**
  * @return {string} 返回当前用户目录
  */
@@ -138,7 +142,7 @@ function displayFiles(err:Error, files:Array<FileClass>) :void{
  * @param {FileClass} file 类
  */
 function displayFile(file:FileClass) {
-  console.log(file.fileName +' ' + file.type+' '+file.size);
+  console.log(file.fileName +' ' + file.type+' '+file.size); // 第一次启动时候,刷新按钮使用后往往不执行这一步,增加安全警告豁免试一下
   const mainArea = document.getElementById('hstautoworkpanel-store-items');
   const template = document.getElementById('store-item-template');
   // 创建模板实列的副本
@@ -286,9 +290,57 @@ function clickCheckbox(cloneCheckbox:any) {
   cloneCheckbox.checked = (!cloneCheckbox.checked);
   constructSelectFileList();
 }
+/**
+ * 将选定文件加入工作列表
+ */
+function addFileListToTaskList() {
+  console.log('test');
+  const sql = 'insert into book set ?';
+  const data = {
+    taskname: '图书名称',
+    filename: '图书作者',
+    filehash: '图书分类',
+    hashmethod: '图书简述',
+    workstate: '',
+    workmethod: '',
+    createdon: '',
+    dealon: '',
+    completedon: '',
+    reportfile: '',
+    suggestions: '',
+    lastdownloadon: '',
+    downloadcount: '',
+  };
+  const connection = connectionDB();
+  if (selectedFiles.length>0) {
+    selectedFiles.forEach(function(file:FileClass) {
+      connection.query(sql, data, function(error, results, fields) {
+        if (error) throw error;
+        if (results.affectedRows == 1) {
+          console.log('插入成功');
+        }
+        //执行插入成功返回的results
+        // OkPacket {
+        //   fieldCount: 0,
+        //   affectedRows: 1,
+        //   insertId: 7,
+        //   serverStatus: 2,
+        //   warningCount: 0,
+        //   message: '',
+        //   protocol41: true,
+        //   changedRows: 0
+        // }
+      });
+    });
+    connection.end();
+  }
+}
 document.getElementById('hstautoworkpanel-storepanel-refresh').addEventListener('click', function(event:MouseEvent) {
   getFilesInFolder(getUsersHomeFolder());
   getDriversInfo();
+});
+document.getElementById('hstautoworkpanel-storepanel-addTask').addEventListener('click', function(event:MouseEvent) {
+  addFileListToTaskList();
 });
 getFilesInFolder(getUsersHomeFolder());
 getDriversInfo();

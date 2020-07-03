@@ -134,7 +134,7 @@ function displayFiles(err, files) {
  * @param {FileClass} file 类
  */
 function displayFile(file) {
-    console.log(file.fileName + ' ' + file.type + ' ' + file.size);
+    console.log(file.fileName + ' ' + file.type + ' ' + file.size); // 第一次启动时候,刷新按钮使用后往往不执行这一步,增加安全警告豁免试一下
     const mainArea = document.getElementById('hstautoworkpanel-store-items');
     const template = document.getElementById('store-item-template');
     // 创建模板实列的副本
@@ -285,9 +285,18 @@ function clickCheckbox(cloneCheckbox) {
     cloneCheckbox.checked = (!cloneCheckbox.checked);
     constructSelectFileList();
 }
+/**
+ * 将选定文件加入工作列表
+ */
+function addFileListToTaskList() {
+    console.log('test');
+}
 document.getElementById('hstautoworkpanel-storepanel-refresh').addEventListener('click', function (event) {
     getFilesInFolder(getUsersHomeFolder());
     getDriversInfo();
+});
+document.getElementById('hstautoworkpanel-storepanel-addTask').addEventListener('click', function (event) {
+    addFileListToTaskList();
 });
 getFilesInFolder(getUsersHomeFolder());
 getDriversInfo();
