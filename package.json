@@ -50,7 +50,7 @@
         "chalk": "^3.0.0",
         "check-for-leaks": "^1.2.1",
         "devtron": "^1.4.0",
-        "electron": "^5.0.13",
+        "electron": "^7.2.4",
         "electron-packager": "^12.2.0",
         "electron-rebuild": "^1.11.0",
         "electron-winstaller": "^2.2.0",
