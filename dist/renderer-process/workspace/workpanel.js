@@ -6,7 +6,7 @@
 //    $('#myList a:last-child').tab('show');
 Object.defineProperty(exports, "__esModule", { value: true });
 // });
-// import mysql = require('mysql');
+const mysql = require("mysql");
 const fs = require("fs");
 const osenv = require("osenv");
 // 引入 aysnc模块
@@ -33,15 +33,24 @@ class FileClass {
     }
 }
 let selectedFiles;
-/*
+/**
+ * 连接数据库
+ * @return {mysql.Connectio} 返回数据库连接
+ */
 function connectionDB() {
-  const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '123qwe', // or the original password : 'apaswword'
-    database: 'komodohstauto',
-  });
-}*/
+    //
+    // ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'
+    // flush privileges;
+    //'password' is root's password
+    // For root connecte on localhost. If root on other host , remove @'localhost'.
+    const dbConnection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '123qwe',
+        database: 'komodohstauto',
+    });
+    return dbConnection;
+}
 /**
  * @return {string} 返回当前用户目录
  */
@@ -162,6 +171,9 @@ function displayFile(file) {
     else {
         cloneDivCheckbox.id = 'checkbox-' + file.path;
         cloneCheckbox.value = file.path;
+        cloneCheckbox.addEventListener('change', function () {
+            constructSelectFileList();
+        });
         cloneImg.addEventListener('click', function () {
             // alert('f '+file.fileName);
             clickCheckbox(cloneCheckbox);
@@ -283,21 +295,114 @@ function constructSelectFileList() {
  */
 function clickCheckbox(cloneCheckbox) {
     cloneCheckbox.checked = (!cloneCheckbox.checked);
-    constructSelectFileList();
+    constructSelectFileList(); // 收集选定文件列表
 }
 /**
  * 将选定文件加入工作列表
  */
 function addFileListToTaskList() {
-    console.log('test');
+    // console.log('test');
+    const myDate = new Date();
+    const sql = 'insert into worktasks set ?';
+    const connection = connectionDB();
+    if (selectedFiles.length > 0) {
+        selectedFiles.forEach(function (file) {
+            const data = {
+                taskname: file.fileName,
+                filename: file.path,
+                filehash: '',
+                hashmethod: '',
+                workstate: '1',
+                workmethod: '',
+                createdon: myDate,
+                dealon: myDate,
+                completedon: myDate,
+                reportfile: '',
+                suggestions: '',
+                lastdownloadon: myDate,
+                downloadcount: '0',
+            };
+            connection.query(sql, data, function (error, results, fields) {
+                if (error) {
+                    console.log('insert err :' + error);
+                    connection.rollback();
+                }
+                if (results.affectedRows == 1) {
+                    console.log('插入成功');
+                }
+                //执行插入成功返回的results
+                // OkPacket {
+                //   fieldCount: 0,
+                //   affectedRows: 1,
+                //   insertId: 7,
+                //   serverStatus: 2,
+                //   warningCount: 0,
+                //   message: '',
+                //   protocol41: true,
+                //   changedRows: 0
+                // }
+            });
+        });
+        connection.end();
+    }
+}
+/**
+ * 按照逻辑绘制list
+ * @param {any} dbResults 数据集
+ */
+function drawTaskList(dbResults) {
+    const taskpanel = document.getElementById('hstautoworkpanel-taskpanel');
+    const tasktemple = document.getElementById('task-item-template');
+    dbResults.forEach((element) => {
+        const clone = document.importNode(tasktemple, true);
+        clone.classList.remove('is-templete');
+        const tasknameDiv = clone.getElementsByClassName('task-item-taskname')[0];
+        tasknameDiv.innerHTML = element.taskname;
+        taskpanel.appendChild(clone);
+    });
+    completeLoading();
+}
+/**
+ * 刷新task列表
+ */
+function refreshTaskList() {
+    showLoading();
+    const taskpanel = document.getElementById('hstautoworkpanel-taskpanel');
+    const sql = 'SELECT * FROM komodohstauto.worktasks where workstate=1 or workstate=9 order by createdon desc';
+    const connection = connectionDB();
+    connection.query(sql, function (error, results) {
+        if (error) {
+            console.log('select err :' + error);
+        }
+        console.log(results);
+        drawTaskList(results);
+    });
+    connection.end();
+}
+/**
+ * 显示loading画面
+ */
+function showLoading() {
+    const _LoadingHtml = '<div id="loadingDiv" style="display: none; "><div id="over" style=" position: absolute;top: 0;left: 0; width: 100%;height: 100%; background-color: #f5f5f5;opacity:0.5;z-index: 1000;"></div><div id="layout" style="position: absolute;top: 40%; left: 40%;width: 20%; height: 20%;  z-index: 1001;text-align:center;"><img src="../assets/img/loading.gif" /></div></div>';
+    document.write(_LoadingHtml);
+    document.getElementById('loadingDiv').style.display = 'block';
+}
+/**
+ * 完成loading画面
+ */
+function completeLoading() {
+    document.getElementById('loadingDiv').style.display = 'none';
 }
 document.getElementById('hstautoworkpanel-storepanel-refresh').addEventListener('click', function (event) {
     getFilesInFolder(getUsersHomeFolder());
     getDriversInfo();
 });
+// 加入task列表，按键事件
 document.getElementById('hstautoworkpanel-storepanel-addTask').addEventListener('click', function (event) {
     addFileListToTaskList();
+    refreshTaskList();
 });
 getFilesInFolder(getUsersHomeFolder());
 getDriversInfo();
+refreshTaskList();
 //# sourceMappingURL=workpanel.js.map

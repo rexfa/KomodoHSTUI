@@ -71,8 +71,16 @@
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-task" role="tabpanel" aria-labelledby="nav-task-tab">任务
+                    <div class="tab-pane fade show active" id="nav-task" role="tabpanel" aria-labelledby="nav-task-tab">
+                        <div id="hstautoworkpanel-taskpanel" class="list-group hstautoworkpanel-taskpanel">
 
+                        </div>
+                        <div id="task-item-template" class="list-group-item hstautoworkpanel-task is-templete">
+                            <div class="task-item-taskname"></div>
+                            <div class='task-item-button'>
+                                <button class='task-item-start'>开始任务</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="nav-store" role="tabpanel" aria-labelledby="nav-store-tab">
                         <div>
@@ -105,15 +113,16 @@
                 </div>
             </div>
             <script type="text/javascript">
-                require('../dist/renderer-process/workspace/workpanel')
+                // 每个模块统一先放在index最后
             </script>
         </section>
         <section id="storagepanel-section" class="section js-section u-category-storagepanel"></section>
         <section id="settingspanel-section" class="section js-section u-category-hstautoworkpanel"></section>
         <section id="statuspanel-section" class="section js-section u-category-statuspanel"></section>
     </main>
-    <script>
+    <script type="text/javascript">
         require('../dist/require/nav')
+        require('../dist/renderer-process/workspace/workpanel')
     </script>
 </body>
 

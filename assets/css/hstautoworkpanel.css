@@ -55,3 +55,17 @@
     visibility: visible;
     opacity: 1;
 }
+
+.hstautoworkpanel-task {
+    visibility: visible;
+    opacity: 1;
+}
+
+.hstautoworkpanel-task.is-templete {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.hstautoworkpanel-taskpanel {
+    display: inline;
+}
