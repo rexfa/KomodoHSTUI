@@ -16,6 +16,9 @@ function initialize() {
     // initialization and is ready to create browser windows.
     // Some APIs can only be used after this event occurs.
     electron_1.app.on('ready', createWindow);
+    // app.whenReady(()=>{
+    //  app.allowRendererProcessReuse=false;
+    // });
     // Quit when all windows are closed.
     electron_1.app.on('window-all-closed', () => {
         // On OS X it is common for applications and their menu bar
@@ -36,6 +39,7 @@ function initialize() {
  *
  */
 function createWindow() {
+    electron_1.app.allowRendererProcessReuse = false;
     // Create the browser window.
     const windowOptions = {
         height: 780,

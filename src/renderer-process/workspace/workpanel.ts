@@ -4,6 +4,17 @@
 // $(function () {
 //    $('#myList a:last-child').tab('show');
 
+// for drivelist
+// NODE_MODULE_VERSION xx. This version of Node.js requires
+// NODE_MODULE_VERSION XX. Please try re-compiling or re-installing
+// yarn add electron-rebuild --dev
+// ./node_modules/.bin/electron-rebuild
+// .\node_modules\.bin\electron-rebuild.cmd   \\windows
+
+// for electorn ^7
+// yarn add @types/node@12.12.6 --dev  //不建议
+// npm install -S @types/node@12.12.6 //我用
+// @types/node@13 have 'Cannot extend an interface 'NodeJS.EventEmitter'. Did you mean 'implements'?'
 import {Stats} from 'fs';
 
 // });
@@ -96,16 +107,21 @@ function getFilesInFolder(folderPath:string | Buffer | URL) {
   }
 }
 /**
- * 异步读取文件和目录
+ * 异步读取文件和目录 换成同步遍历呢？打算试试
  * @param {string | Buffer | URL} folderPath 目录
  * @param {string[]} files 文件数组
  */
 function inspectAndDescribeFiles(folderPath:string | Buffer | URL, files:string[]) {
-  async.map(files, function(file) {
+  // async.map(files, function(file) {
+  //   const resolveFilePath = path.resolve(folderPath as string, file);// 返回相对当前路径呃绝对路径
+  //   console.log('Get Path Folders is '+resolveFilePath);
+  //   inspectAndDescribeFile(resolveFilePath);
+  // }, displayFiles);
+  files.forEach((file:string)=>{
     const resolveFilePath = path.resolve(folderPath as string, file);// 返回相对当前路径呃绝对路径
     console.log('Get Path Folders is '+resolveFilePath);
     inspectAndDescribeFile(resolveFilePath);
-  }, displayFiles);
+  });
 }
 /**
  * 检擦文件和目录

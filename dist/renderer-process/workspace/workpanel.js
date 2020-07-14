@@ -9,8 +9,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mysql = require("mysql");
 const fs = require("fs");
 const osenv = require("osenv");
-// 引入 aysnc模块
-const async = require("async");
 // 引入path模块
 const path = require("path");
 const drivelist = require("drivelist");
@@ -91,16 +89,21 @@ function getFilesInFolder(folderPath) {
     }
 }
 /**
- * 异步读取文件和目录
+ * 异步读取文件和目录 换成同步遍历呢？打算试试
  * @param {string | Buffer | URL} folderPath 目录
  * @param {string[]} files 文件数组
  */
 function inspectAndDescribeFiles(folderPath, files) {
-    async.map(files, function (file) {
+    // async.map(files, function(file) {
+    //   const resolveFilePath = path.resolve(folderPath as string, file);// 返回相对当前路径呃绝对路径
+    //   console.log('Get Path Folders is '+resolveFilePath);
+    //   inspectAndDescribeFile(resolveFilePath);
+    // }, displayFiles);
+    files.forEach((file) => {
         const resolveFilePath = path.resolve(folderPath, file); // 返回相对当前路径呃绝对路径
         console.log('Get Path Folders is ' + resolveFilePath);
         inspectAndDescribeFile(resolveFilePath);
-    }, displayFiles);
+    });
 }
 /**
  * 检擦文件和目录
