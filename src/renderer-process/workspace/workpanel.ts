@@ -27,6 +27,9 @@ import async = require('async');
 // 引入path模块
 import path = require('path');
 import drivelist = require('drivelist');
+//引入settings
+//https://github.com/nathanbuchar/electron-settings/wiki/FAQs
+import settings = require('electron-settings');
 /**
  * 文件类
  */
@@ -69,11 +72,17 @@ function connectionDB():mysql.Connection {
   return dbConnection;
 }
 /**
+ * @param {boolean} needHome 表示需要home
  * @return {string} 返回当前用户目录
  */
-function getUsersHomeFolder():string {
-  //console.log('Home is '+osenv.home());
-  return osenv.home();
+function getFolderOrUsersHomeFolder(needHome=false):string {
+  const historyFolder = settings.getSync('WorkPanel.HistoryFolder');
+  if (historyFolder&& !needHome) {
+    return historyFolder as string;
+  } else {
+    //console.log('Home is '+osenv.home());
+    return osenv.home();
+  }
 }
 
 /**
@@ -83,6 +92,7 @@ function getUsersHomeFolder():string {
 function getFilesInFolder(folderPath:string | Buffer | URL) {
   console.log('Folder is '+folderPath);
   removeAllFileAndDir();
+  settings.set('WorkPanel.HistoryFolder', folderPath as string);
   const lbCurrentdisk = document.getElementById('hstautoworkpanel-storepanel-currentdisk');
   lbCurrentdisk.innerHTML = folderPath as string;
   // fs.readdir(folderPath, (err, files)=> {
@@ -99,8 +109,8 @@ function getFilesInFolder(folderPath:string | Buffer | URL) {
   } catch (err) {
     console.log('fs err is '+err);
     getDriversInfo();
-    if (folderPath!=getUsersHomeFolder()) {
-      getFilesInFolder(getUsersHomeFolder());
+    if (folderPath!=getFolderOrUsersHomeFolder(true)) {
+      getFilesInFolder(getFolderOrUsersHomeFolder(true));
     } else {
       return;
     }
@@ -119,7 +129,7 @@ function inspectAndDescribeFiles(folderPath:string | Buffer | URL, files:string[
   // }, displayFiles);
   files.forEach((file:string)=>{
     const resolveFilePath = path.resolve(folderPath as string, file);// 返回相对当前路径呃绝对路径
-    console.log('Get Path Folders is '+resolveFilePath);
+    //console.log('Get Path Folders is '+resolveFilePath);
     inspectAndDescribeFile(resolveFilePath);
   });
 }
@@ -163,7 +173,7 @@ function displayFiles(err:Error, files:Array<FileClass>) :void{
  * @param {FileClass} file 类
  */
 function displayFile(file:FileClass) {
-  console.log(file.fileName +' ' + file.type+' '+file.size); // 第一次启动时候,刷新按钮使用后往往不执行这一步,增加安全警告豁免试一下
+  //console.log(file.fileName +' ' + file.type+' '+file.size); // 第一次启动时候,刷新按钮使用后往往不执行这一步,增加安全警告豁免试一下
   const mainArea = document.getElementById('hstautoworkpanel-store-items');
   const template = document.getElementById('store-item-template');
   // 创建模板实列的副本
@@ -411,8 +421,14 @@ function completeLoading(): void{
   document.getElementById('loadingDiv').style.display='none';
 }
 
+function saveSettings(): void{
+  const workdir:string = document.getElementById('workdirText').nodeValue;
+  const needDeleteSourcFile = document.getElementById('needDeleteSourcFileCheckbox').nodeValue;
+  settings.set();
+}
+
 document.getElementById('hstautoworkpanel-storepanel-refresh').addEventListener('click', function(event:MouseEvent) {
-  getFilesInFolder(getUsersHomeFolder());
+  getFilesInFolder(getFolderOrUsersHomeFolder());
   getDriversInfo();
 });
 
@@ -421,6 +437,6 @@ document.getElementById('hstautoworkpanel-storepanel-addTask').addEventListener(
   addFileListToTaskList();
   refreshTaskList();
 });
-getFilesInFolder(getUsersHomeFolder());
+getFilesInFolder(getFolderOrUsersHomeFolder());
 getDriversInfo();
 refreshTaskList();

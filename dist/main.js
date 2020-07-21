@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
 const path = require("path");
+// import * as fs from 'fs';
 let mainWindow;
 const debug = /--debug/.test(process.argv[2]);
 if (process.mas) {

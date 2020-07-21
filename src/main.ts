@@ -1,6 +1,6 @@
 import {app, BrowserWindow, BrowserWindowConstructorOptions} from 'electron';
 import * as path from 'path';
-import * as fs from 'fs';
+// import * as fs from 'fs';
 
 let mainWindow: Electron.BrowserWindow;
 const debug = /--debug/.test(process.argv[2]);
