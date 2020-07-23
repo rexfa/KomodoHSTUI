@@ -30,6 +30,8 @@ import drivelist = require('drivelist');
 //引入settings
 //https://github.com/nathanbuchar/electron-settings/wiki/FAQs
 import settings = require('electron-settings');
+//引用子进程模块
+const exec = require('child_process').exec;
 /**
  * 文件类
  */
@@ -420,13 +422,21 @@ function showLoading(): void{
 function completeLoading(): void{
   document.getElementById('loadingDiv').style.display='none';
 }
-
+/**
+ * 保存设置
+ */
 function saveSettings(): void{
   const workdir:string = document.getElementById('workdirText').nodeValue;
   const needDeleteSourcFile = document.getElementById('needDeleteSourcFileCheckbox').nodeValue;
-  settings.set();
+  //settings.set();
 }
+/**
+ * 运行子进程
+ */
+function runTask()
+{
 
+}
 document.getElementById('hstautoworkpanel-storepanel-refresh').addEventListener('click', function(event:MouseEvent) {
   getFilesInFolder(getFolderOrUsersHomeFolder());
   getDriversInfo();
