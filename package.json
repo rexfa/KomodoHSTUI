@@ -56,7 +56,7 @@
         "electron-winstaller": "^4.0.1",
         "eslint": "^7.4.0",
         "husky": "^4.2.5",
-        "marked": "^1.1.1",
+        "marked": "^4.0.10",
         "mocha": "^8.0.1",
         "npm-run-all": "^4.0.2",
         "prettier": "*",
