@@ -83,7 +83,7 @@
         "@types/bootstrap": "^4.5.0",
         "@types/electron": "^1.6.10",
         "@types/jquery": "^3.3.38",
-        "async": "^3.2.0",
+        "async": "^3.2.2",
         "diskinfo": "0.0.3",
         "drivelist": "^9.0.2",
         "electron-log": "^4.2.2",
