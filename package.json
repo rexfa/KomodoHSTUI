@@ -57,7 +57,7 @@
         "eslint": "^7.4.0",
         "husky": "^4.2.5",
         "marked": "^1.1.1",
-        "mocha": "^8.0.1",
+        "mocha": "^8.4.0",
         "npm-run-all": "^4.0.2",
         "prettier": "*",
         "request": "^2.70.0",
